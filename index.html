@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <script src="https://aframe.io/releases/1.4.0/aframe.min.js"> </script>
+        <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"> </script>
+</head>
+
+<script>
+    AFRAME.registerComponent('modify-materials', {
+      init: function () {
+        // Wait for model to load.
+        this.el.addEventListener('model-loaded', () => {
+          // Grab the mesh / scene.
+          const obj = this.el.getObject3D('mesh');
+          // Go over the submeshes and modify materials we want.
+          obj.traverse(node => {
+            if (node.name.indexOf('ship') !== -1) {
+              node.material.color.set('red');
+            }
+          });
+        });
+      }
+    });
+  </script>
+
+<body>
+    <a-scene embedded arjs>
+        <a-assets>
+            <img id="my-image" src="https://uas-csp-rahmad.weddingkisaran.com//img/merah.png">
+            <a-asset-item id="cityModel" src="https://uas-csp-rahmad.weddingkisaran.com//assets/model/ferrari_f50_1995.glb"></a-asset-item>
+        </a-assets>
+        <a-marker preset="custom" type="pattern" url="https://uas-csp-rahmad.weddingkisaran.com/pattern/pattern-ASIA.patt">
+            <a-image src="#my-image" position="0 1.5 -2" width="3" height="1.5"></a-image>
+            <a-entity gltf-model="#cityModel" position="0 0 -2" scale="0.5 0.5 0.5" modify-materials></a-entity>
+        </a-marker>
+        <a-entity camera></a-entity>
+    </a-scene>
+</body>
+</html>
